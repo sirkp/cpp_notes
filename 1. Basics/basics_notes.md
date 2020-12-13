@@ -13,7 +13,7 @@
         - **Header Files-** These files contains definition of pre-defined functions. Ex- I/O functions are in ‘iostream’
         - **user defined files-** When a program becomes very large, it is good practice to divide it into smaller files and include whenever needed.
             ```c++
-                #include"filename.cpp"
+                #include "filename.cpp"
             ```
       - **Conditional Compiling-** It helps to compile a specific portion of the program or to skip compilation of some specific part of the program based on some conditions.
             
@@ -40,6 +40,24 @@
         cout<<"Hello World!"<<endl;>
     }
 ```
+ ## Declaration, Intialiazation, Assignment
+   - **Declaration:** Declaration is when you declare a variable with a name
+   
+   - **Assignment:** throwing away the old value of a variable and replacing it with a new one.
+   
+   - **Intialization:** it's a special kind of assignment: the first. Before initialization objects have null value and primitive types have default values, can be done in conjugation with declaration
+   
+     ```c++
+        // declaration
+        string declaration;// memory allocated
+
+        // Intialization
+        string initialization = "initialization";
+        declaration = "initialization"; //late initialization 
+        
+        // Assignment
+        declaration = "assignment";
+     ```
 
  ## Data Types
    ![](images/basic2.png)
@@ -334,3 +352,133 @@
   - Bitwise Operators: ^, &, |
   - Assignment  Operators: =, +=
   - Other Operator: sizeof()
+
+ ## #define vs typedef
+  ### typedef
+   The typedef is used to give data type a new name. typedef should be terminated with semicolon, #define should not be terminated by semicolon
+   ```c++
+        typedef unsigned char BYTE; 
+
+        void fn(){
+          BYTE b1 = 'c';
+        }
+   ```
+
+  ### #define
+   #define is a directive which is used to #define alias.
+   ```c++
+        #define HYD "Hyderabad"
+        #define fr(n) for(int i=0;i<n;i++)
+   ```
+  
+  typedef | #define
+  ------- | -------
+  typedef is limited to giving symbolic names to types only | It can be used to define alias for a function, piece of code like for.
+  interpretation is performed by the compiler | interpretation performed by preprocessor.
+  typedef is the actual definition of a new type. | it will just copy-paste the definition values at the point of use
+  typedef follows the scope rule | when preprocessor encounters #define, it replaces all the occurrences
+
+ ## static keyword
+  - the lifetime of static variables is till program running, static variables preserve their previous value in their previous scope and are not initialized again in the new scope
+
+  - Static variables are allocated memory in data segment(text)
+    ```c++
+      int i = 0;
+      while(i<3){
+          static int v = 1;
+          static int u;
+          cout<<"u: "<<u<<" v:"<<v<<"\n";
+          v++;
+          u++;
+          i++;
+      }
+
+      // Output:
+      // u: 0 v:1
+      // u: 1 v:2
+      // u: 2 v:3
+  
+      int initializer(){ 
+          return 50; 
+      }
+      int main(){
+        static int i = initializer(); 
+        cout<<i;// 50
+
+        static int j;
+        cout<<j<<endl;// 0, default value
+      }
+    ```
+ 
+ ## const keyword
+  - value of constant variables will not change.
+  - We can change the pointer to point to any other integer variable, but cannot change the value of the objec
+  ```c++
+      const int X = 10;
+      X = 15;// error
+      
+      int a = 1;
+      int b = 2;
+      const int *ptr;// or int const *ptr
+      ptr = &a;
+      *ptr = 3;// error
+
+      ptr = &b;// valid
+  ```
+
+ ## automatic varibale
+  All variables that are declared inside the block, are automatic variables by default. We can explicitly declare an automatic variable using auto keyword
+  
+ ## Global Variable
+ - Global variables are defined outside a function, hold their values throughout the lifetime of your program and can be accessed inside any of the functions defined for the program. 
+
+ - they always have default value;
+  ```c++
+    int g;
+
+    int main(){
+      cout<<g;// 0
+    }
+  ``` 
+
+ ## Extern keyword
+ - extern simply tells us that the variable is defined elsewhere and not within the same block where it is used.
+  
+ - So an extern variable is nothing but a global variable.The main purpose of using extern variables is that they can be accessed between two different files which are part of a large program.
+  ```c++
+    extern int var;// memory not allocated
+    // treat it as like declaring functions
+    void fn(int);
+    // like later we define function we will also define var.
+
+    //Example 1
+    extern int var; 
+    int main(void) { 
+      return 0; 
+    } 
+    // This will compile successfully because var is declared only not used
+
+    // Example 2
+    extern int var; 
+    int main(void){ 
+      var = 10; 
+      return 0; 
+    }// error 
+  
+    // Example 4
+    #include "somefile.h" 
+    extern int var; 
+    int main(void) { 
+      var = 10; 
+      return 0; 
+    } 
+    // Assuming that somefile.h contains the definition of var, this program will compile successfully.
+
+    // Example 5
+    extern int var = 0;// declared and defined 
+    int main(void) { 
+      var = 10; 
+      return 0; 
+    }// will compile successfully
+
+  ```
